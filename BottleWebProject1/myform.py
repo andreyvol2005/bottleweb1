@@ -49,9 +49,9 @@ def my_form():
         with open(JSON_FILE, 'w') as f:
             json.dump(data, f, indent=4, sort_keys=True)
 
-        return f"""Thanks, {username}! 
-                The answer to your question will be sent to {mail}. 
-                Access Date: {datetime.now().strftime("%Y-%m-%d")}
+        return f"""Thanks, {username}!<br>
+                The answer to your question will be sent to {mail}.<br>
+                Access Date: {datetime.now().strftime("%Y-%m-%d")}<br>
                 Your question: {question}"""
     else:
         return "This question already exists in our database"
