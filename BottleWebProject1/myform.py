@@ -1,15 +1,16 @@
-from bottle import post, request
+from bottle import post, request, response
 import re
 from datetime import datetime
-import pdb
+import json
+import os
 
-questions = {}
+JSON_FILE = 'data.json'
 
 @post('/home', method='post')
 def my_form():
     mail = request.forms.get('ADRESS')
     username = request.forms.get('USERNAME')
-    question = request.forms.get('QUESTION')
+    question = request.forms.get('QUESTION').strip()
     
     if not mail or not username or not question:
         return "Please fill in all fields"
@@ -18,12 +19,39 @@ def my_form():
     if not re.match(email_pattern, mail):
         return "Invalid email format"
     
-    questions[mail] = [username, question]
+    if len(question) < 4:
+        return "Question must be at least 4 characters long"
+    if question.isdigit():
+        return "Question cannot consist of only digits"
     
-    pdb.set_trace()
-    
-    current_date = datetime.now().strftime("%Y-%m-%d")
-    return f"""Thanks, {username}! 
-            The answer to your question will be sent to {mail}. 
-            Access Date: {current_date}
-            Your question: {question}"""
+    data = {}
+    if os.path.exists(JSON_FILE):
+        with open(JSON_FILE, 'r') as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                data = {}
+                
+    if 'users' not in data:
+        data['users'] = {}
+        
+    if mail not in data['users']:
+        data['users'][mail] = {
+            'username': username,
+            'questions': [],
+            'last_access': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+    if question not in data['users'][mail]['questions']:
+        data['users'][mail]['questions'].append(question)
+        data['users'][mail]['last_access'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        with open(JSON_FILE, 'w') as f:
+            json.dump(data, f, indent=4, sort_keys=True)
+
+        return f"""Thanks, {username}! 
+                The answer to your question will be sent to {mail}. 
+                Access Date: {datetime.now().strftime("%Y-%m-%d")}
+                Your question: {question}"""
+    else:
+        return "This question already exists in our database"
