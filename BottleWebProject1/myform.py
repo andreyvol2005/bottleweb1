@@ -18,7 +18,7 @@ def my_form():
     if not re.match(email_pattern, mail):
         return "Invalid email format"
     
-    questions[mail] = question
+    questions[mail] = [username, question]
     
     pdb.set_trace()
     
