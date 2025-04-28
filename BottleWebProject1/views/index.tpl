@@ -29,8 +29,8 @@
 </div>
 <h3> Ask a Question </h3>
 <form action="/home" method="post">
-    <input type="text" name="USERNAME" placeholder="Your name" required>
-    <input type="email" name="ADRESS" placeholder="Your email" required>
-    <textarea name="QUESTION" placeholder="Your question" required></textarea>
-    <input type="submit" value="Submit">
+    <p><input type="text" name="USERNAME" placeholder="Your name" required></p>
+    <p><input type="email" name="ADRESS" placeholder="Your email" required></p>
+    <p><textarea name="QUESTION" placeholder="Your question" required></textarea></p>
+    <p><input type="submit" value="Submit"></p>
 </form>

@@ -6,6 +6,23 @@ import os
 
 JSON_FILE = 'data.json'
 
+def validate_q(question):
+    question = question.strip()
+    
+    if not question:    
+        return "Question cannot be empty"
+    
+    if len(question) < 4:
+        return "Question is too short (minimum 4 characters)"
+    
+    if question.isdigit():
+        return "Question cannot consist of only digits"
+    
+    if not any(c.isalpha() for c in question):
+        return "Question must contain at least one letter"
+    
+    return None
+
 @post('/home', method='post')
 def my_form():
     mail = request.forms.get('ADRESS')
@@ -15,14 +32,12 @@ def my_form():
     if not mail or not username or not question:
         return "Please fill in all fields"
     
-    email_pattern = r'^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    email_pattern = r'^[a-zA-Z][a-zA-Z0-9._%+-]{4,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     if not re.match(email_pattern, mail):
         return "Invalid email format"
     
-    if len(question) < 4:
-        return "Question must be at least 4 characters long"
-    if question.isdigit():
-        return "Question cannot consist of only digits"
+    if validate_q(question):
+        return validate_q(question);
     
     data = {}
     if os.path.exists(JSON_FILE):

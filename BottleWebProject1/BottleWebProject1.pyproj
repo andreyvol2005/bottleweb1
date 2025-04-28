@@ -18,6 +18,9 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>BottleWebProject1</Name>
     <RootNamespace>BottleWebProject1</RootNamespace>
+    <TestFramework>unittest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,8 +32,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.py" />
+    <Compile Include="calc.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="myform.py" />
+    <Compile Include="myform_mail.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes.py" />
+    <Compile Include="test_calc.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test_invalid_mail.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test_valid_mail.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="utest_calc.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="static\" />
